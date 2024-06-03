@@ -9,9 +9,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlServer("name=Default"));
-
+builder.Services.AddTransient<SeedDB>();
 var app = builder.Build();
-
+SeedDataAsync(app);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -31,3 +31,14 @@ app.UseCors(x => x
     .AllowCredentials());
 
 app.Run();
+
+void SeedDataAsync(WebApplication app)
+{
+    IServiceScopeFactory? scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (IServiceScope? scope = scopedFactory!.CreateScope())
+    {
+        SeedDB? service = scope.ServiceProvider.GetService<SeedDB>();
+        service!.SeedAsync().Wait();
+    }
+}

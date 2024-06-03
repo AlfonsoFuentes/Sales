@@ -35,17 +35,49 @@ namespace Sales.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(Country country)
         {
-            await _context.AddAsync(country);
-            await _context.SaveChangesAsync();
-            return Ok(country);
+            try
+            {
+                await _context.AddAsync(country);
+                await _context.SaveChangesAsync();
+                return Ok(country);
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest($"{country.Name} is existing");
+
+                }
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpPut]
         public async Task<IActionResult> Put(Country country)
         {
 
-            _context.Update(country);
-            await _context.SaveChangesAsync();
-            return Ok(country);
+            try
+            {
+                _context.Update(country);
+                await _context.SaveChangesAsync();
+                return Ok(country);
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException!.Message.Contains("duplicate"))
+                {
+                    return BadRequest($"{country.Name} is existing");
+
+                }
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
