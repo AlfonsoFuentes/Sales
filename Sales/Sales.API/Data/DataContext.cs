@@ -1,7 +1,5 @@
-﻿
-
-using Domain;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Sales.Shared;
 
 namespace Sales.API.Data
 {

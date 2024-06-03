@@ -1,0 +1,45 @@
+﻿@typeparam T
+@if(Items is null)
+{
+    @if(Loading is null)
+    {
+        <div class="align-items-center">
+            <img src="https://media4.giphy.com/media/3oEjI6SIIHBdRxXI40/200w.gif?cid=6c09b9528q4t9y7p88nuhgs1q6mabwoqcga571r1g9oiwgtu&ep=v1_gifs_search&rid=200w.gif&ct=g" />
+        </div>
+    }
+    else
+    {
+        @Loading
+    }
+
+}
+else if(Items.Count==0)
+{
+    if(NoRecords is null)
+    {
+        <div class="align-items-center">
+            <p>No records</p>
+        </div>
+    }
+    else
+    {
+        @NoRecords
+    }
+}
+else
+{
+    @Body
+}
+
+@code {
+    [Parameter]
+    public RenderFragment? Loading { get; set; }
+    [Parameter]
+    public RenderFragment? NoRecords { get; set; }
+    [Parameter]
+    [EditorRequired]
+    public RenderFragment Body { get; set; } = null!;
+    [Parameter]
+    [EditorRequired]
+    public List<T> Items { get; set; } = null!;
+}

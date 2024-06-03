@@ -1,0 +1,42 @@
+﻿@page "/countries"
+
+<h3>Countries</h3>
+<GenericList Items="@Countries">
+    <Body>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Countries)
+                {
+                    <tr>
+                        <td>
+                            <a class="btn btn-warning">Edit</a>
+                            <button class="btn btn-danger">Delete</button>
+                        </td>
+                        <td>
+                            @row.Name
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Body>
+</GenericList>
+
+
+@code {
+    [Inject]
+    private IRepository Repository { get; set; }
+
+    private List<Country> Countries { get; set; } = null!;
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Repository.Get<List<Country>>("/countries");
+        Countries = response.Response!;
+    }
+}
