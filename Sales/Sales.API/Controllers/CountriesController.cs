@@ -21,7 +21,7 @@ namespace Sales.API.Controllers
         {
             return Ok(await _context.Countries.ToListAsync());
         }
-        [HttpGet("Id")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetById(int id)
         {
             var country = await _context.Countries.SingleOrDefaultAsync(x => x.Id == id);
@@ -47,7 +47,7 @@ namespace Sales.API.Controllers
             await _context.SaveChangesAsync();
             return Ok(country);
         }
-        [HttpDelete("Id")]
+        [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
             var country = await _context.Countries.SingleOrDefaultAsync(x => x.Id == id);
